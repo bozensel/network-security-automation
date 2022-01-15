@@ -1,0 +1,10 @@
+# schedule.every(10).minutes.do(ddos_update)
+# schedule.every().hour.do(ddos_update)
+schedule.every().day.at("07:15").do(ddos_update)
+# schedule.every().monday.do(job)
+# schedule.every().wednesday.at("13:15").do(ddos_update)
+#schedule.every().minute.at(":15").do(ddos_update)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
