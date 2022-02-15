@@ -142,9 +142,8 @@ ExcelExport = [["CI", "IP", "Global Network", "Global Next Hop", "TAC"]]
         for i in son_IP:
             for j in son_prefix:
                 if ipaddress.ip_address(f"{i}") in ipaddress.ip_network(f"{j}"):
-                    print( i + " " + j + " " + "olay devam ediyor")
+                    print( i + " " + j)
                     if i in anons_var:
-                        print("ben zaten burdayım bro")
                         continue
                     anons_var.append(i)
                     continue
