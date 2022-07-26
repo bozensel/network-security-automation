@@ -139,4 +139,4 @@ ExcelExport = [["CI", "IP", "Global Prefix", "Global Next IP", "TEC"]]
     else:
         print("No mail needs to be sent.")
 
-ddos_analyzer()
+attack_analyzer()
