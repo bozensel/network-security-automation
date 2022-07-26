@@ -10,29 +10,29 @@ def XLSExport(Rows, SheetName, FileName):
 
     wb.save(FileName)
 
-#-------------Opening Input.txt--------------#
-    with open('input.log') as f: 
+#-------------Opening entry.txt--------------#
+    with open('entry.log') as f: 
         lines = f.readlines()
 
     input1 = []
     for line in lines:
-        if 'cus' in line and "cloud" not in line and "profiled" not in line and "profiled_router" not in line and "parent" not in line:
+        if 'customer' in line and "cloud" not in line and "spine" not in line:
             input1.append(line)
             
 ExcelExport = [["CI", "IP", "Global Prefix", "Global Next IP", "TEC"]]
-#-------------Parsing required data from input.txt using REGEX--------------#
-    customer_id = []
-    customer_name = []
-    customer_prefix = []
+#-------------Parsing desired data from entry.txt using REGEX--------------#
+    cus_nmbr = []
+    cus_nm = []
+    cus_prfx = []
 
-    pattern = '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]?'
+    pattern = <snipped> # pattern for regex. 
 
     for line in input1:
         id = re.findall(pattern, line)
         id33 = ''.join(id)
-        customer_id.append(id33)
+        cus_nmbr.append(id33)
 
-    # print(customer_id)
+    # print(cus_nmbr)
 
     pattern2 = '(?<=\d_)(.*?)(?=\|)'
 
@@ -40,26 +40,26 @@ ExcelExport = [["CI", "IP", "Global Prefix", "Global Next IP", "TEC"]]
         id2 = re.findall(pattern2, line)
         id30 = ''.join(id2)
         id31 = id30.split('__')[0]
-        customer_name.append(id31)
+        cus_nm.append(id31)
 
-    # print(customer_name)
+    # print(cus_nm)
 
 #-------------Data needs to be in required format--------------#
     j = 0
-    customer_id_name = []
+    cus_nmbr_name = []
 
-    for line in customer_prefix1:
+    for line in cus_prfx1:
         if type(line) == list:
             for i in line:
-                customer_id_name.append(customer_id[j] + "-" + customer_name[j])
-                # print(f"{customer_id[j]} -- {customer_name[j]} --> {i}")
+                cus_nmbr_name.append(cus_nmbr[j] + "-" + cus_nm[j])
+                # print(f"{cus_nmbr[j]} -- {cus_nm[j]} --> {i}")
                 with open('sonuc.txt', 'a') as f:
-                    f.write(customer_id_name[j] + "**" + i + "\n")
+                    f.write(cus_nmbr_name[j] + "**" + i + "\n")
         else:
-            # print(f"{customer_id[j]} -- {customer_name[j]} --> {line}")
-            customer_id_name.append(customer_id[j] + "-" + customer_name[j])
+            # print(f"{cus_nmbr[j]} -- {cus_nm[j]} --> {line}")
+            cus_nmbr_name.append(cus_nmbr[j] + "-" + cus_nm[j])
             with open('sonuc.txt', 'a') as f:
-                f.write(customer_id_name[j] + "**" + line + "\n")
+                f.write(cus_nmbr_name[j] + "**" + line + "\n")
         j = j + 1
 
 #-------------Established to the Cisco Box--------------#
@@ -74,15 +74,15 @@ ExcelExport = [["CI", "IP", "Global Prefix", "Global Next IP", "TEC"]]
         time.sleep(30)
         output = remote_connection.recv(9999999)
         result = output.decode('ascii').strip("\n")
-        output_list_fnk1 = result.splitlines()
+        output_function1 = result.splitlines()
 
-        ilk_prefix = []
+        first_prefix = []
         The_IP = '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d\d?'
 
-        for line in output_list_fnk1:
+        for line in output_function1:
             id3 = re.findall(The_IP, line)
             id4 = "".join(id3)
-            ilk_prefix.append(id4)
+            first_prefix.append(id4)
 
   #-------------Using "ip_address" Module to control announce of prefixes in VRF layer (with command show route vrf ddos-clean-traffic)--------------#
         for i in last_IP:
@@ -109,19 +109,19 @@ ExcelExport = [["CI", "IP", "Global Prefix", "Global Next IP", "TEC"]]
 
             IP2, words14 = "", ""
             for output_list_fnk4 in output_list_fnk3:
-                ddos3 = []
+                dds12 = []
 
                 Regex2 = "^( )*(?P<IP>[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*(from).*$"
                 IPSearch2 = re.search(Regex2, output_list_fnk4)
                 if IPSearch2 is not None:
                     IP2 = IPSearch2.group("IP")
-                    ddos3.append(IP2)
+                    dds12.append(IP2)
 
                 if ("Routing entry for" in output_list_fnk4):
                     words12 = output_list_fnk4
                     words13 = words12.split(" ")
                     words14 = words13[3]
-                    ddos3.append(words14)
+                    dds12.append(words14)
 
                 if IP2 != "" and words14 != "":
                     IPStatus2 = "Announce False" if words14 == "0.0.0.0/0" else "Announce True"
@@ -132,11 +132,11 @@ ExcelExport = [["CI", "IP", "Global Prefix", "Global Next IP", "TEC"]]
                     print(colored(x  + " " + IPStatus2, Color))
                     IP2, words14 = "", ""
 
-    XLSExport(ExcelExport, "DDOS 2.0", "Announce Control.xlsx")
+    XLSExport(ExcelExport, "DDOS", "My_output.xlsx")
 
     if Flag:
-        SendMailwAttachment_(ExcelExport, "Announce Control.xlsx")
+        SendMailwAttachment_(ExcelExport, "My_output.xlsx")
     else:
-        print(" As there is no problem, no mail is send")
+        print("No mail needs to be sent.")
 
 ddos_analyzer()
