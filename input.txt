@@ -1,6 +1,2 @@
-cus__ddos_1137188_companyA__general|192.168.0.1/31
-cus__ddos_10002045_companyB__general|192.168.0.12/29
-cus__ddos_10095667_companyC_cloud|192.168.0.96/24
-cus__ddos_10129611_companyD__profiled_router|192.168.0.1/29
-cus__ddos_10159321_companyE__profiled|192.168.0.1/29 192.168.0.1/29
-cus__ddos_10216977_companyF__parent|192.168.0.1/29
+client__ddos_1137188_companyA__general|192.168.0.1/31
+client__ddos_10002045_companyB__general|192.168.0.12/29
