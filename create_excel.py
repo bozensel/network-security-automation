@@ -1,11 +1,12 @@
-def XLSExport(Rows, SheetName, FileName):
+
+def NLS_FUNC(Satirlar, Bölüm, DosyaAdi):
     from openpyxl import Workbook
     wb = Workbook()
 
     ws = wb.active
-    ws.title = SheetName
-    # ws = wb.create_sheet(SheetName)
-    for x in Rows:
+    ws.title = Bölüm
+    # ws = wb.create_sheet(Bölüm)
+    for x in Satirlar:
         ws.append(x)
 
-    wb.save(FileName)
+    wb.save(DosyaAdi)
