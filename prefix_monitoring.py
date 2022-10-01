@@ -139,4 +139,5 @@ ExcelExport = [["Description", "PREFIX", "Advertised IP"]]
     else:
         print("No mail needs to be sent.")
 
+
 attack_analyzer()
